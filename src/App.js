@@ -1,14 +1,20 @@
-// import './App.css';
-import Main from './components/Main'
+import React, { Component } from "react";
+import HomePage from './pages/HomePage';
 
-function App() {
-  return (
-    <div>
-      <Main />
- 
-    </div>
 
-);  
+class App extends Component {
+
+
+  render() {
+    return (
+      <div className="bg-dark" >
+< HomePage/>
+      </div>
+      
+
+    );
+
+  }
+
 }
-
 export default App;

@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import Main from '../components/Main'
 import API from '../utils/Api'
+import SearchForm from '../components/SearchForm'
 
 export default class HomePage extends Component {
   state = {
     result: [],
+    filterResults:[],
     search: '',
   }
   componentDidMount() {
@@ -14,37 +16,78 @@ export default class HomePage extends Component {
   searchEEs = () => {
     API.search()
       .then((res) => {
-        this.setState({ result: res.data.results })
+        this.setState({ result: res.data.results, filterResults:res.data.results })
         console.log(this.state.result[0].picture.thumbnail)
       })
 
       .catch((err) => console.log(err))
   }
 sortfirst = () => {
-    console.log("Sorting")
+  this.setState({
+    filterResults:this.state.filterResults.sort(function(a, b){return a.name.first - b.name.first})
+
+  })
+  
+  console.log("sorting")
 }
+handleInputChange = event => {
+  const name = event.target.name;
+  const value = event.target.value;
+  this.setState({
+    [name]: value
+  });
+  this.filterEmployees(this.state.search);
+};
+
+componentDidUpdate(){
+
+}
+
+filterEmployees = (name) => {
+
+  this.setState({
+    filterResults: this.state.result.filter(employee =>{
+      return employee.name.first.toLowerCase().includes(name.toLowerCase())
+    })
+  })
+
+
+
+
+}
+
+
   render() {
     return (
-      <div>
+      <div className = "container p-3 mb-2 bg-dark text-white">
         <div>
-          <h1>Employee Directory</h1>
-          <h3>
+          <h1  className="text-center" >Employee Directory</h1>
+          <h3 className="text-center" >
             Click on the headings to toggle-sort, or search for a specific
             employee by first name using the search bar
           </h3>
         </div>
-        <table>
+        
+        <SearchForm
+        blue={this.handleInputChange}
+        redb = {this.state.search}
+        />
+      
+ 
+        <table >
+          <thead>
           <tr>
             <th>Photo</th>
-            <th onClick = {this.sortfirst} >First name  </th>
-            <th>Last name</th>
-            <th>Phone Number</th>
-            <th>Email address</th>
-            <th>User name</th>
+            <th  onClick = {this.sortfirst} >First name  </th>
+            <th >Last name</th>
+            <th >Phone Number</th>
+            <th >Email address</th>
+            <th >User name</th>
           </tr>
+          </thead>
 
           {this.state.result.length
-            ? this.state.result.map((person) => {
+            ? this.state.filterResults.map((person) => {
                 return (
                   <Main 
                     imgSrc={person.picture.thumbnail}
