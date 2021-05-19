@@ -8,6 +8,7 @@ export default class HomePage extends Component {
     result: [],
     filterResults:[],
     search: '',
+    firstName:[]
   }
   componentDidMount() {
     this.searchEEs()
@@ -23,8 +24,13 @@ export default class HomePage extends Component {
       .catch((err) => console.log(err))
   }
 sortfirst = () => {
+  const sorted = this.state.filterResults.sort(function(a, b){
+    console.log(a.name.first - b.name.first)
+    return a.name.first - b.name.first})
+
+  console.log(sorted)
   this.setState({
-    filterResults:this.state.filterResults.sort(function(a, b){return a.name.first - b.name.first})
+    filterResults: sorted
 
   })
   
@@ -36,7 +42,7 @@ handleInputChange = event => {
   this.setState({
     [name]: value
   });
-  this.filterEmployees(this.state.search);
+  this.filterEmployees(value);
 };
 
 componentDidUpdate(){
@@ -44,17 +50,12 @@ componentDidUpdate(){
 }
 
 filterEmployees = (name) => {
-
-  this.setState({
-    filterResults: this.state.result.filter(employee =>{
-      return employee.name.first.toLowerCase().includes(name.toLowerCase())
-    })
+  const filtered = this.state.result.filter(employee =>{
+    return employee.name.first.toLowerCase().includes(name.toLowerCase())
   })
-
-
-
-
+  this.setState({ filterResults: filtered})
 }
+
 
 
   render() {
