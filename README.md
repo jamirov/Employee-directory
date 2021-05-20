@@ -11,6 +11,7 @@
 * This is a single page Application: 
 ![alt text](./public/eedir.png)
 
+## [This is the link to deployed application](https://jamirov.github.io/Employee-directory/)
 
 
 ## Credits
