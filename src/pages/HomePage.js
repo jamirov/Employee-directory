@@ -24,9 +24,7 @@ export default class HomePage extends Component {
       .catch((err) => console.log(err))
   }
 sortfirst = () => {
-  const sorted = this.state.filterResults.sort(function(a, b){
-    console.log(a.name.first - b.name.first)
-    return a.name.first - b.name.first})
+  const sorted = this.state.filterResults.sort((a, b) => (a.name.first > b.name.first) ? 1 : -1)
 
   console.log(sorted)
   this.setState({
@@ -36,6 +34,9 @@ sortfirst = () => {
   
   console.log("sorting")
 }
+
+
+
 handleInputChange = event => {
   const name = event.target.name;
   const value = event.target.value;
